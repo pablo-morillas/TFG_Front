@@ -70,7 +70,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   final _controllerPasswdConfirm = new TextEditingController();
   final _controllerNombre = TextEditingController();
   final _controllerUsername = TextEditingController();
-  var _controllerEmpresa = TextEditingController();
+  var _controllerUserType = TextEditingController();
+
+  List<String> listOfValue = ['alumne', 'profesor'];
 
 
   User user = new User();
@@ -218,6 +220,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
                 ),
               ),
               Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 40.0),
+                child: DropdownButtonFormField(
+                  style: TextStyle(
+                      color: Colors.black
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Tipus d\'usuari',
+                    labelStyle: TextStyle(color: Colors.black),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  items: listOfValue.map((String val){
+                    return DropdownMenuItem(
+                        value: val,
+                        child: Text(val)
+                    );
+                  }).toList(),
+                  onChanged: (value){
+                    setState(() {
+                      _controllerUserType.text = value;
+                    });
+                  },
+                  validator: (value) => value == null
+                      ? 'No s\'ha seleccionat cap tipus d\'usuari.' : null,
+                ),
+              ),
+              Padding(
                   padding: const EdgeInsets.only(top:30.0, bottom: 20.0, left: 90.0, right: 90.0),
                   child: ElevatedButton(
                     onPressed: () {
@@ -264,6 +294,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
           'password_confirmation': _controllerPasswdConfirm.text,
           'email': _controllerEmail.text,
           'name': _controllerNombre.text,
+          'usertype': _controllerUserType.text,
         }));
     _responseCode = response.statusCode;
     print(_responseCode);
