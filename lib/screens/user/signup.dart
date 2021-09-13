@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:tfg/global/global.dart';
 import 'package:tfg/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   final _controllerPasswdConfirm = new TextEditingController();
   final _controllerNombre = TextEditingController();
   final _controllerUsername = TextEditingController();
-  var _controllerUserType = TextEditingController();
+  var _controllerUserRole = TextEditingController();
 
   List<String> listOfValue = ['alumne', 'profesor'];
 
@@ -240,7 +241,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
                   }).toList(),
                   onChanged: (value){
                     setState(() {
-                      _controllerUserType.text = value;
+                      _controllerUserRole.text = value;
                     });
                   },
                   validator: (value) => value == null
@@ -259,7 +260,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
                           }
                           else{
                             login(_controllerEmail.text, _controllerPasswd.text).whenComplete(() {
-                              if(_responseCode == 201){
+                              if(_responseCode == 200){
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(builder: (context) => Home(user))
@@ -284,17 +285,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   }
 
   Future<void> signUp() async{
-    http.Response response = await http.post(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/signup/"),
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
         body: jsonEncode(<String, String>{
+          'nombre': _controllerNombre.text,
           'username': _controllerUsername.text,
-          'password': _controllerPasswd.text,
-          'password_confirmation': _controllerPasswdConfirm.text,
           'email': _controllerEmail.text,
-          'name': _controllerNombre.text,
-          'usertype': _controllerUserType.text,
+          'password': _controllerPasswd.text,
+          'userRole': _controllerUserRole.text,
         }));
     _responseCode = response.statusCode;
     print(_responseCode);
@@ -308,7 +308,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   }
 
   Future<void> login(String email, String password) async{
-    http.Response response = await http.post(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/login/"),
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/login"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -316,8 +316,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
           'email': email,
           'password': password}));
     _responseCode = response.statusCode;
-    var data = jsonDecode(response.body);
-    user = User.fromJson(data['user']);
-    user.token = data['acces_token'];
+    _token = response.headers['authorization'].toString();
+
+
+    final response2 = await http.get(new Uri.http(apiURL, "/api/usuarios/"+email));
+    user = User.fromJson(jsonDecode(response2.body));
+    user.token = _token;
+
   }
 }

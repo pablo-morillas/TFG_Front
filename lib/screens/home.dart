@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
   Home(this.user);
   User user;
 
-  static const String _title = 'CyberAware';
+  static const String _title = 'TFG';
   @override
   _HomeState createState() => _HomeState();
 

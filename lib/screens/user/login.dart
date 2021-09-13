@@ -8,7 +8,7 @@ import 'package:tfg/screens/user/signup.dart';
 
 import 'package:tfg/screens/home.dart';
 
-import 'package:tfg/global/global.dart' as Global;
+import 'package:tfg/global/global.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -46,7 +46,7 @@ class LogIn extends StatelessWidget {
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
-  String title = 'CyberAware';
+  String title = 'TFG';
 
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
@@ -188,7 +188,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   }
 
   Future<void> login(String email, String password) async{
-    http.Response response = await http.post(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/login/"),
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/login"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
         },
@@ -199,6 +199,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
     var data = jsonDecode(response.body);
     user = User.fromJson(data['user']);
     user.token = data['access_token'];
+
+    print(user.userRole);
+
   }
 
 }

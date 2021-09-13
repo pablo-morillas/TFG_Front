@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:tfg/global/global.dart';
 import 'package:tfg/models/User.dart';
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,7 +120,7 @@ class _ProfileState extends State<Profile>{
             SizedBox(height: 90.0,),
             ListTile(
               title: Center(child: Text(
-                  widget.user.name,
+                  widget.user.nombre,
                   style: TextStyle(
                     fontSize: 20,
                   )
@@ -140,14 +141,14 @@ class _ProfileState extends State<Profile>{
     );
   }
 
-  Future<void> update(String name) async{
-    http.Response response = await http.patch(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/update_profile/"),
+  Future<void> update(String nombre) async{
+    http.Response response = await http.patch(new Uri.http(apiURL, "/api/authentication/update_profile/"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
           HttpHeaders.authorizationHeader: "Token " + widget.user.token.toString(),
         },
         body: jsonEncode(<String, String>{
-          'name': name,
+          'nombre': nombre,
         }));
     var data = jsonDecode(response.body);
     print(data);

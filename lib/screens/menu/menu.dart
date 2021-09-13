@@ -58,7 +58,7 @@ class _MenuContent extends State<Menu> {
           ),
           UserAccountsDrawerHeader(
             accountName: Text(
-              widget.user.name,
+              widget.user.nombre,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
