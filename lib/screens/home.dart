@@ -1,3 +1,4 @@
+import 'package:tfg/global/global.dart';
 import 'package:tfg/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +25,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   int _puntuacio = 0, _max_puntuacio = 0, _realitzades= 0, _pendents = 0;
-  int _puntuacio_acumulada = 0, _max_puntuacio_acumulada = 0, _acumulades = 0;
   Future<void> _have_metrics;
 
   @override
   void initState() {
     _puntuacio = _max_puntuacio = _realitzades = _pendents = 0;
-    _puntuacio_acumulada = _max_puntuacio_acumulada = _acumulades = 0;
     _have_metrics = get_metrics();
   }
 
@@ -59,7 +58,7 @@ class _HomeState extends State<Home> {
             ListView(
               padding: EdgeInsets.all(20),
               children: [
-                Text('Indicadors dels últims 7 dies:',
+                Text('Indicadors totals:',
                   style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
                 SizedBox(height: 20),
                 Align(
@@ -108,57 +107,6 @@ class _HomeState extends State<Home> {
                       ],
                     )
                 ),
-                Divider(
-                  thickness: 2,
-                  height: 60,),
-                Text('Indicadors totals: ',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Text('Aquests indicadors corresponen l\'activitat des de l\'inscripció de l\'usuari fins ara.',
-                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,),
-                SizedBox(height: 20),
-                Container(
-                    padding: EdgeInsets.all(20),
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent.shade100,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Puntuació acumulada:',
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
-                        SizedBox(height:20),
-                        Text(_puntuacio_acumulada.toString()+" / "+_max_puntuacio_acumulada.toString(),
-                          style: TextStyle(fontSize: 30,),),
-                        SizedBox(height: 10),
-                        Text('puntuació obtinguda / puntuació màxima',
-                          style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                          textAlign: TextAlign.center,),
-                      ],
-                    )
-                ),
-                SizedBox(height: 20),
-                Container(
-                    padding: EdgeInsets.all(20),
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent.shade100,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Formacions acumulades:',
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
-                        SizedBox(height:10),
-                        Text(_acumulades.toString()+" realitzades",
-                          style: TextStyle(fontSize: 30,),),
-                      ],
-                    )
-                )
               ],
             ),
           );
@@ -168,19 +116,16 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> get_metrics() async{
-    http.Response response = await http.get(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/get_puntuacio"),
+    http.Response response = await http.get(new Uri.http(apiURL, "/api/usuarios/"+ widget.user.email +"/puntuaciones"),
       headers: <String, String>{
         HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
-        'Authorization': "Token "+widget.user.token.toString(),
+        'Authorization': "Token "+ widget.user.token.toString(),
       },);
     var data = jsonDecode(utf8.decode(response.bodyBytes));
-    _puntuacio = data['puntuacio'];
-    _max_puntuacio = data['max_puntuacio'];
-    _puntuacio_acumulada = data['puntuacio_acumulada'];
-    _max_puntuacio_acumulada = data['max_puntuacio_acumulada'];
-    _realitzades = data['formacions_realitzades'];
-    _pendents = data['formacions_pendents'];
-    _acumulades = data['formacions_acumulades'];
+    _puntuacio = data['puntos'];
+    _max_puntuacio = data['maxPuntos'];
+    _realitzades = data['testsRealizados'];
+    _pendents = data['testsPendientes'];
   }
 
 }
