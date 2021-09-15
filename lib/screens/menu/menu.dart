@@ -1,4 +1,5 @@
 import 'package:tfg/models/User.dart';
+import 'package:tfg/screens/aula/ListaClases.dart';
 import 'package:tfg/screens/user/login.dart';
 import 'package:tfg/screens/user/profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,6 +37,13 @@ class _MenuContent extends State<Menu> {
         context,
         MaterialPageRoute(builder: (context) => Profile(widget.user))
 
+    );
+  }
+
+  nAulas(){
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context)=> ListaClases(widget.user))
     );
   }
 
@@ -87,6 +95,13 @@ class _MenuContent extends State<Menu> {
             title: Text(
                 'Perfil'),
             onTap: () => nProfile(),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.class_),
+            title: Text(
+                'Aulas'),
+            onTap: () => nAulas(),
           ),
 
           ListTile(
