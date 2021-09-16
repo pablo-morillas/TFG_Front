@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:tfg/global/global.dart';
 import 'package:tfg/models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   final _controllerPasswdConfirm = new TextEditingController();
   final _controllerNombre = TextEditingController();
   final _controllerUsername = TextEditingController();
-  var _controllerEmpresa = TextEditingController();
+  var _controllerUserRole = TextEditingController();
+
+  List<String> listOfValue = ['alumne', 'profesor'];
 
 
   User user = new User();
@@ -218,6 +221,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
                 ),
               ),
               Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 40.0),
+                child: DropdownButtonFormField(
+                  style: TextStyle(
+                      color: Colors.black
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Tipus d\'usuari',
+                    labelStyle: TextStyle(color: Colors.black),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  items: listOfValue.map((String val){
+                    return DropdownMenuItem(
+                        value: val,
+                        child: Text(val)
+                    );
+                  }).toList(),
+                  onChanged: (value){
+                    setState(() {
+                      _controllerUserRole.text = value;
+                    });
+                  },
+                  validator: (value) => value == null
+                      ? 'No s\'ha seleccionat cap tipus d\'usuari.' : null,
+                ),
+              ),
+              Padding(
                   padding: const EdgeInsets.only(top:30.0, bottom: 20.0, left: 90.0, right: 90.0),
                   child: ElevatedButton(
                     onPressed: () {
@@ -229,7 +260,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
                           }
                           else{
                             login(_controllerEmail.text, _controllerPasswd.text).whenComplete(() {
-                              if(_responseCode == 201){
+                              if(_responseCode == 200){
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(builder: (context) => Home(user))
@@ -254,16 +285,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   }
 
   Future<void> signUp() async{
-    http.Response response = await http.post(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/signup/"),
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
         body: jsonEncode(<String, String>{
+          'nombre': _controllerNombre.text,
           'username': _controllerUsername.text,
-          'password': _controllerPasswd.text,
-          'password_confirmation': _controllerPasswdConfirm.text,
           'email': _controllerEmail.text,
-          'name': _controllerNombre.text,
+          'password': _controllerPasswd.text,
+          'userRole': _controllerUserRole.text,
         }));
     _responseCode = response.statusCode;
     print(_responseCode);
@@ -277,7 +308,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   }
 
   Future<void> login(String email, String password) async{
-    http.Response response = await http.post(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/login/"),
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/login"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -285,8 +316,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
           'email': email,
           'password': password}));
     _responseCode = response.statusCode;
-    var data = jsonDecode(response.body);
-    user = User.fromJson(data['user']);
-    user.token = data['acces_token'];
+    _token = response.headers['authorization'].toString();
+
+
+    final response2 = await http.get(new Uri.http(apiURL, "/api/usuarios/"+email));
+    user = User.fromJson(jsonDecode(response2.body));
+    user.token = _token;
+
   }
 }

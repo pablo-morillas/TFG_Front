@@ -1,4 +1,5 @@
 import 'package:tfg/models/User.dart';
+import 'package:tfg/screens/aula/ListaClases.dart';
 import 'package:tfg/screens/user/login.dart';
 import 'package:tfg/screens/user/profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,6 +40,13 @@ class _MenuContent extends State<Menu> {
     );
   }
 
+  nAulas(){
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context)=> ListaClases(widget.user))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -58,7 +66,7 @@ class _MenuContent extends State<Menu> {
           ),
           UserAccountsDrawerHeader(
             accountName: Text(
-              widget.user.name,
+              widget.user.nombre,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -87,6 +95,13 @@ class _MenuContent extends State<Menu> {
             title: Text(
                 'Perfil'),
             onTap: () => nProfile(),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.class_),
+            title: Text(
+                'Aulas'),
+            onTap: () => nAulas(),
           ),
 
           ListTile(

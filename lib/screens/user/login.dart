@@ -8,7 +8,7 @@ import 'package:tfg/screens/user/signup.dart';
 
 import 'package:tfg/screens/home.dart';
 
-import 'package:tfg/global/global.dart' as Global;
+import 'package:tfg/global/global.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -46,7 +46,7 @@ class LogIn extends StatelessWidget {
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
-  String title = 'CyberAware';
+  String title = 'TFG';
 
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
@@ -127,7 +127,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
                       if (_formKey.currentState.validate()) {
                         login(controllerEmail.text, controllerPasswd.text).whenComplete(
                                 () {
-                              if(_responseCode != 201){
+                              if(_responseCode != 200){
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text('Credencials invàlides.'),
                                 ));
@@ -188,17 +188,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   }
 
   Future<void> login(String email, String password) async{
-    http.Response response = await http.post(new Uri.http("cyberaware.pythonanywhere.com", "/api/authentication/login/"),
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/login"),
         headers: <String, String>{
-          HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
         },
         body: jsonEncode(<String, String>{
           'email': email,
           'password': password}));
     _responseCode = response.statusCode;
-    var data = jsonDecode(response.body);
-    user = User.fromJson(data['user']);
-    user.token = data['access_token'];
-  }
+    _token = response.headers['authorization'].toString();
 
+
+    final response2 = await http.get(new Uri.http(apiURL, "/api/usuarios/"+email));
+    user = User.fromJson(jsonDecode(response2.body));
+    user.token = _token;
+
+    print(user.userRole);
+  }
 }
