@@ -98,10 +98,10 @@ class _ListaClasesState extends State<ListaClases>{
 
     http.Response response;
     if(widget.user.userRole == "profesor"){
-      response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases"));
+      response = await http.get(new Uri.http(apiURL, "/api/usuarios/" + widget.user.email + "/aulas"));
     }
     else{
-      response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/clasesassist"));
+      response = await http.get(new Uri.http(apiURL, "/api/usuarios/" + widget.user.email + "/clasesPertany"));
     }
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));

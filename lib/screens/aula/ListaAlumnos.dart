@@ -25,6 +25,9 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
 
   User alumno;
 
+  final controllerEmail = new TextEditingController();
+
+
   @override
   List<dynamic> initState() {
     getListaAlumnos();
@@ -35,49 +38,51 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
 
     print(_listaAlumnos);
 
-    return Column(
-      children: [
-        Scaffold(
-          drawer: Menu(widget.user),
-          appBar: AppBar(
-            title: Text(
-              'Alumnos',
-              style: TextStyle(
-                color: Colors.white,
+    return Scaffold(
+      drawer: Menu(widget.user),
+      appBar: AppBar(
+        title: Text(
+          'Alumnos',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _listaAlumnos.length,
+                itemBuilder: (BuildContext context, index){
+                  return ListTile(
+                      title: Text(_listaAlumnos[index].nombre),
+                      onLongPress: (){
+                        deleteAlumno(context, _listaAlumnos[index]);
+                      },
+                      trailing: Icon(Icons.arrow_forward_ios),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),)
+                  );
+                }),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                  addAlumno(context);
+              },
+              child: const Text('Afegir alumne', style: TextStyle(fontSize: 20)),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                onPrimary: Colors.white,
+                elevation: 5,
               ),
             ),
-          ),
-          body: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _listaAlumnos.length,
-              itemBuilder: (BuildContext context, index){
-                return ListTile(
-                  title: Text(_listaAlumnos[index].nombre),
-                    onLongPress: (){
-
-                    },
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),)
-                );
-              }),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Bottom Button!', style: TextStyle(fontSize: 20)),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              elevation: 5,
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
+
 
   Widget padding(Widget widget){
     return Padding(padding: EdgeInsets.all(7.0), child: widget);
@@ -85,12 +90,92 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
 
 
   Future<void> getListaAlumnos() async {
-    http.Response response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/" + widget.aula.id.toString() + "/alumnos" ));
+    http.Response response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases/" + widget.aula.id.toString() + "/alumnos" ));
     var data = jsonDecode(utf8.decode(response.bodyBytes));
     print(data);
 
     setState((){
       _listaAlumnos = data.map((model) => User.fromJson(model)).toList();
     });
+  }
+
+  Future<void> deleteAlumno(context, User alumno) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Eliminar alumne"),
+          content: Text("Està segur que vol esborrar a " + alumno.nombre + " de la classe?"),
+          actions: [
+            TextButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                child: Text("Cancelar")),
+            TextButton(
+                onPressed: () async {
+                  await http.delete(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases/" + widget.aula.id.toString() + "/" + alumno.email));
+                  Navigator.pop(context);
+                  setState(() {
+                    getListaAlumnos();
+                  });
+                },
+                child: Text("Esborrar", style: TextStyle(color: Colors.red),)),
+          ],
+        )
+    );
+  }
+  Future<void> addAlumno(context) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Afegir alumne"),
+          content: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              labelText: 'Email',
+              labelStyle: TextStyle(color: Colors.black),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
+            keyboardType: TextInputType.emailAddress,
+            controller: controllerEmail,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'No s\'ha escrit cap email.';
+              }
+              RegExp regex = new RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+              if(!regex.hasMatch(value)){
+                return 'Format d\'email invalid.';
+              }
+              return null;
+            },
+          ),
+          actions: [
+            TextButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                child: Text("Cancelar")),
+            TextButton(
+                onPressed: () async {
+                  await http.put(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases" ),
+                      headers: <String, String>{
+                        'Content-Type': 'application/json',
+                      },
+                      body: jsonEncode(<String, dynamic>{
+                          'claseId': widget.aula.id,
+                          'alumnoAssistenteEmail': controllerEmail.text}));
+                  Navigator.pop(context);
+                  setState(() {
+                    getListaAlumnos();
+                  });
+                },
+                child: Text("Afegir", style: TextStyle(color: Colors.green),)),
+          ],
+        )
+    );
   }
 }
