@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:tfg/global/global.dart';
 import 'package:tfg/models/Aula.dart';
 import 'package:tfg/models/User.dart';
-import 'package:tfg/screens/aula/CardAula.dart';
 import 'package:http/http.dart' as http;
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:tfg/screens/test/ListaTests.dart';
+
+import 'ListaAlumnos.dart';
 
 class ListaClases extends StatefulWidget{
 
@@ -52,11 +53,19 @@ class _ListaClasesState extends State<ListaClases>{
             return InkWell(
                 onTap: (){
                   aula = _listaAulas[index];
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => ListaTests(widget.user, aula))
-                  );
-                  Scaffold.of(context).showSnackBar(SnackBar(content: Text("Nombre "+ _listaAulas[index].nombre)));
+                  if(widget.user.userRole == "profesor"){
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, aula))
+                    );
+                  }
+                  else{
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => ListaTests(widget.user, aula))
+                    );
+                  }
+
                 },
                 child: Card(
                   child: Column(
@@ -86,7 +95,15 @@ class _ListaClasesState extends State<ListaClases>{
 
 
   Future<void> getListaAulas() async {
-    http.Response response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases"));
+
+    http.Response response;
+    if(widget.user.userRole == "profesor"){
+      response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases"));
+    }
+    else{
+      response = await http.get(new Uri.http(apiURL, "/api/" + widget.user.email + "/clasesassist"));
+    }
+
     var data = jsonDecode(utf8.decode(response.bodyBytes));
     print(data);
 

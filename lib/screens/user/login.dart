@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 class LogIn extends StatelessWidget {
-  static const String _title = 'CyberAware';
+  static const String _title = 'TFG';
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class LogIn extends StatelessWidget {
 
       child: Scaffold(
         appBar: AppBar(
-          title: Text('CyberAware'),
+          title: Text('TFG'),
           centerTitle: true,
         ),
         body: Stack(

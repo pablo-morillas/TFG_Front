@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    print("Buenas");
+    print(widget.user.userRole);
 
     return FutureBuilder<void>(
         future: _have_metrics,

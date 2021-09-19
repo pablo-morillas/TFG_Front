@@ -9,6 +9,7 @@ class Aula{
   User _profesor;
 
   Aula({int id, String nombre, User profesor}){
+    this._id = id;
     this._nombre = nombre;
     this._profesor = profesor;
   }

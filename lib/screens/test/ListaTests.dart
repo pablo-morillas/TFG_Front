@@ -8,6 +8,7 @@ import 'package:tfg/models/Test.dart';
 import 'package:tfg/models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:tfg/screens/menu/menu.dart';
+import 'package:tfg/screens/test/Quiz.dart';
 
 class ListaTests extends StatefulWidget{
 
@@ -23,6 +24,8 @@ class ListaTests extends StatefulWidget{
 class _ListaTestsState extends State<ListaTests>{
 
   List<dynamic> _listaTests = [];
+
+  Test test;
 
   @override
   List<dynamic> initState() {
@@ -51,7 +54,13 @@ class _ListaTestsState extends State<ListaTests>{
             return ListTile(
               title: Text(_listaTests[index].nombre),
                 onTap: (){
-                  Scaffold.of(context).showSnackBar(SnackBar(content: Text("Nombre "+ _listaTests[index].nombre)));
+                  test = _listaTests[index];
+
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Quiz(widget.user, widget.aula, test))
+                  );
+
                 },
               trailing: Icon(Icons.arrow_forward_ios),
             );
