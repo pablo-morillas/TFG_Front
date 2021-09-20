@@ -100,7 +100,7 @@ class _MenuContent extends State<Menu> {
           ListTile(
             leading: Icon(Icons.class_),
             title: Text(
-                'Aulas'),
+                'Aules'),
             onTap: () => nAulas(),
           ),
 

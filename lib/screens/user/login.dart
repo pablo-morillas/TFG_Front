@@ -61,131 +61,166 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   User user = new User();
 
   @override
-  Widget build(BuildContext context) {
-    return Form(
+  Widget build (BuildContext context){
+    return Scaffold(
+      body: Form(
         key: _formKey,
-        child: ListView(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 15.0),
-                height: 150,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
-                child: TextFormField(
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+        child: Padding(
+          padding: EdgeInsets.all(25),
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 40),
+                  Icon(Icons.person_outlined, color: Colors.grey[300], size: 140),
+                  SizedBox(height: 13),
+                  Text(
+                    "Benvingut",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: controllerEmail,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'No s\'ha escrit cap email.';
-                    }
-                    RegExp regex = new RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-                    if(!regex.hasMatch(value)){
-                      return 'Format d\'email invalid.';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: TextFormField(
-                  style: TextStyle(
-                      color: Colors.black
-                  ),
-                  decoration: InputDecoration(
-                    labelText: 'Contrasenya',
-                    labelStyle: TextStyle(color: Colors.black),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                  Text(
+                    "Inicia sessió per continuar",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[400]
                     ),
                   ),
-                  controller: controllerPasswd,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'No s\'ha escrit cap contrasenya.';
-                    }
-                    return null;
-                  },
-                  obscureText: true,
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top:30.0, bottom: 20.0, left: 90.0, right: 90.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        login(controllerEmail.text, controllerPasswd.text).whenComplete(
-                                () {
-                              if(_responseCode != 200){
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text('Credencials invàlides.'),
-                                ));
+                  SizedBox(height: 20),
+                  Container(
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.mail),
+                        labelText: "EMAIL",
+                        labelStyle: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey[400],
+                          fontWeight: FontWeight.w800,
+                        )
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      controller: controllerEmail,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'No s\'ha escrit cap email.';
+                        }
+                        RegExp regex = new RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+                        if(!regex.hasMatch(value)){
+                          return 'Format d\'email invalid.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: TextFormField(
+                      obscureText: true,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Icon(Icons.lock),
+                          labelText: "Contrasenya",
+                          labelStyle: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey[400],
+                            fontWeight: FontWeight.w800,
+                          )
+                      ),
+                      controller: controllerPasswd,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'No s\'ha escrit cap contrasenya.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 50,),
+                  SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          login(controllerEmail.text, controllerPasswd.text).whenComplete(
+                                  () {
+                                if(_responseCode != 200){
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text('Credencials invàlides.'),
+                                  ));
+                                }
+                                else{
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => Home(user))
+                                  );
+                                }
                               }
-                              else{
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => Home(user))
-                                );
-                              }
-                            }
-                        );
-                      }
+                          );
+                        }
 
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        )
+                      ),
+                      child: Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    child: Text(
-                      'Login',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No tens un compte? ",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignUp())
+                          );
+                        },
+                        child: Text(
+                          "Registra\'t",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
                   )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top:70.0, bottom: 5.0, left: 40.0, right: 40.0),
-                child:Text(
-                  'Encara no t\'has registrat? Crea el teu compte.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(top:5.0, bottom: 20.0, left: 90.0, right: 90.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUp())
-                      );
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
-                    ),
-                    child: Text(
-                      'Sign Up',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  )
-              ),
-            ]
-        )
+            ),
+          ),
+        ),
+      )
     );
   }
+
 
   Future<void> login(String email, String password) async{
     http.Response response = await http.post(new Uri.http(apiURL, "/api/usuarios/login"),

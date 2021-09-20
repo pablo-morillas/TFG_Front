@@ -42,7 +42,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
       drawer: Menu(widget.user),
       appBar: AppBar(
         title: Text(
-          'Alumnos',
+          'Alumnes ' + widget.aula.nombre,
           style: TextStyle(
             color: Colors.white,
           ),

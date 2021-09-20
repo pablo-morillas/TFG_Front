@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
                       height: 150,
                       width: 400,
                       decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent.shade100,
+                        color: Colors.lightGreenAccent.shade100,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(
@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
                     height: 150,
                     width: 400,
                     decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent.shade100,
+                      color: Colors.lightGreenAccent.shade100,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
@@ -106,8 +106,12 @@ class _HomeState extends State<Home> {
                         Text(_pendents.toString()+" pendents",
                             style: TextStyle(fontSize: 30,)),
                       ],
+
                     )
                 ),
+                SizedBox(height: 220,),
+
+                buildButtonTest(),
               ],
             ),
           );
@@ -127,6 +131,25 @@ class _HomeState extends State<Home> {
     _max_puntuacio = data['maxPuntos'];
     _realitzades = data['testsRealizados'];
     _pendents = data['testsPendientes'];
+  }
+
+  Widget buildButtonTest() {
+    if(widget.user.userRole == "professor"){
+      return Container(
+        child: ElevatedButton(
+          onPressed: () {
+            //addAlumno(context);
+          },
+          child: const Text('Afegir nou Test', style: TextStyle(fontSize: 20)),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.green,
+            onPrimary: Colors.white,
+            elevation: 5,
+          ),
+        ),
+      );
+    }
+    else return Container();
   }
 
 }
