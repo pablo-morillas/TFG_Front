@@ -53,7 +53,7 @@ class _ListaClasesState extends State<ListaClases>{
             return InkWell(
                 onTap: (){
                   aula = _listaAulas[index];
-                  if(widget.user.userRole == "professor"){
+                  if(widget.user.userRole == "profesor"){
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, aula))
@@ -97,7 +97,7 @@ class _ListaClasesState extends State<ListaClases>{
   Future<void> getListaAulas() async {
 
     http.Response response;
-    if(widget.user.userRole == "professor"){
+    if(widget.user.userRole == "profesor"){
       response = await http.get(new Uri.http(apiURL, "/api/usuarios/" + widget.user.email + "/aulas"));
     }
     else{

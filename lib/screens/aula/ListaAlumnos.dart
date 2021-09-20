@@ -7,6 +7,7 @@ import 'package:tfg/models/Aula.dart';
 import 'package:tfg/models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:tfg/screens/menu/menu.dart';
+import 'package:tfg/screens/test/CreaTest.dart';
 
 class ListaAlumnos extends StatefulWidget{
 
@@ -67,17 +68,38 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
                   );
                 }),
           ),
-          ElevatedButton(
-              onPressed: () {
-                  addAlumno(context);
-              },
-              child: const Text('Afegir alumne', style: TextStyle(fontSize: 20)),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
-                onPrimary: Colors.white,
-                elevation: 5,
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                      addAlumno(context);
+                  },
+                  child: const Text('Afegir alumne', style: TextStyle(fontSize: 20)),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
+                    onPrimary: Colors.white,
+                    elevation: 5,
+                  ),
+                ),
+              SizedBox(width: 50,),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context)=> CreaTest(widget.user, widget.aula))
+                  );
+                },
+                child: const Text('Afegir nou Test', style: TextStyle(fontSize: 20)),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  onPrimary: Colors.white,
+                  elevation: 5,
+                ),
               ),
-            ),
+            ],
+          ),
         ],
       ),
     );

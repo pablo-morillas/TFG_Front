@@ -8,6 +8,7 @@ import 'dart:core';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:tfg/screens/test/CreaTest.dart';
 
 import 'menu/menu.dart';
 
@@ -110,8 +111,6 @@ class _HomeState extends State<Home> {
                     )
                 ),
                 SizedBox(height: 220,),
-
-                buildButtonTest(),
               ],
             ),
           );
@@ -132,24 +131,4 @@ class _HomeState extends State<Home> {
     _realitzades = data['testsRealizados'];
     _pendents = data['testsPendientes'];
   }
-
-  Widget buildButtonTest() {
-    if(widget.user.userRole == "professor"){
-      return Container(
-        child: ElevatedButton(
-          onPressed: () {
-            //addAlumno(context);
-          },
-          child: const Text('Afegir nou Test', style: TextStyle(fontSize: 20)),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.green,
-            onPrimary: Colors.white,
-            elevation: 5,
-          ),
-        ),
-      );
-    }
-    else return Container();
-  }
-
 }

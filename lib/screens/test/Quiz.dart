@@ -36,12 +36,9 @@ class _quizState extends State<Quiz>{
   bool respondida = false;
 
   PageController _controller;
-  int _pageIndex;
-
 
   @override
   List<dynamic> initState() {
-    _pageIndex = 0;
     _puntuacion = 0;
     _controller = PageController(initialPage: 0, keepPage: false);
     //Poner cualquier respuesta para inicializar

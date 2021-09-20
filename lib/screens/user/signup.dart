@@ -67,9 +67,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   final _controllerEmail = new TextEditingController();
   final _controllerPasswd = new TextEditingController();
   final _controllerPasswdConfirm = new TextEditingController();
-  final _controllerNombre = TextEditingController();
-  final _controllerUsername = TextEditingController();
-  var _controllerUserRole = TextEditingController();
+  final _controllerNombre = new TextEditingController();
+  var _controllerUserRole = new TextEditingController();
 
   List<String> listOfValue = ['alumne', 'professor'];
 
@@ -309,7 +308,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
         },
         body: jsonEncode(<String, String>{
           'nombre': _controllerNombre.text,
-          'username': _controllerUsername.text,
           'email': _controllerEmail.text,
           'password': _controllerPasswd.text,
           'userRole': _controllerUserRole.text,
