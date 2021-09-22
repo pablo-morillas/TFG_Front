@@ -44,6 +44,18 @@ class _CreaTestState extends State<CreaTest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Home(widget.user))
+            );
+          },
+        ),
         title: Text(
           "Afegir pregunta",
         ),
@@ -119,7 +131,6 @@ class _CreaTestState extends State<CreaTest> {
                         ),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.mail),
                             labelText: "Pregunta",
                             labelStyle: TextStyle(
                               fontSize: 18,
@@ -145,7 +156,7 @@ class _CreaTestState extends State<CreaTest> {
                         ),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.person_outlined),
+                            suffixIcon: Icon(Icons.question_answer, color: Colors.green,),
                             labelText: "Resposta Correcta",
                             labelStyle: TextStyle(
                               fontSize: 18,
@@ -171,7 +182,7 @@ class _CreaTestState extends State<CreaTest> {
                         ),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.lock),
+                            suffixIcon: Icon(Icons.question_answer, color: Colors.red,),
                             labelText: "Resposta Incorrecta",
                             labelStyle: TextStyle(
                               fontSize: 18,
@@ -196,7 +207,7 @@ class _CreaTestState extends State<CreaTest> {
                         ),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.lock),
+                            suffixIcon: Icon(Icons.question_answer, color: Colors.red,),
                             labelText: "Resposta Incorrecta",
                             labelStyle: TextStyle(
                               fontSize: 18,
@@ -221,7 +232,7 @@ class _CreaTestState extends State<CreaTest> {
                         ),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            prefixIcon: Icon(Icons.lock),
+                            suffixIcon: Icon(Icons.question_answer, color: Colors.red,),
                             labelText: "Resposta Incorrecta",
                             labelStyle: TextStyle(
                               fontSize: 18,
@@ -272,7 +283,7 @@ class _CreaTestState extends State<CreaTest> {
                             )
                         ),
                         child: Text(
-                          'Seguent Pregunta',
+                          'Següent Pregunta',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

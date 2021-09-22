@@ -10,7 +10,7 @@ import 'package:tfg/screens/home.dart';
 
 import 'package:tfg/global/global.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+
 
 class LogIn extends StatelessWidget {
   static const String _title = 'TFG';

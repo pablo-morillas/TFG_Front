@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:tfg/global/global.dart';
 import 'package:tfg/models/Pregunta.dart';
+import 'package:tfg/screens/LoadingScreen.dart';
 import '../../models/Aula.dart';
 import '../../models/Test.dart';
 import '../../models/User.dart';
@@ -178,9 +179,10 @@ class _quizState extends State<Quiz>{
                                         ),
                                         ElevatedButton(
                                           onPressed: (){
-                                            Navigator.pushReplacement(
+                                            //addPuntuacio().whenComplete(() =>
+                                              Navigator.pushReplacement(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => Home(widget.user))
+                                                MaterialPageRoute(builder: (context) => LoadingScreen(widget.user, _puntuacion))
                                             );
                                           },
                                           child: Text('Tornar al menu principal'),
@@ -299,6 +301,20 @@ class _quizState extends State<Quiz>{
     }else{
       return Colors.grey.shade200;
     }
+  }
+
+  Future<void> addPuntuacio() async {
+    await http.put(new Uri.http(apiURL, "/api/usuarios/" + widget.user.email + "/puntos"),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+      'Authorization': widget.user.token,
+    },
+    body: jsonEncode(<String, String>{
+      'email': widget.user.email,
+    'puntos': _puntuacion.toString(),
+    }));
+
+
   }
 
 }
