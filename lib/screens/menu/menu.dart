@@ -1,7 +1,7 @@
 import 'package:tfg/models/User.dart';
 import 'package:tfg/screens/aula/ListaClases.dart';
 import 'package:tfg/screens/user/login.dart';
-import 'package:tfg/screens/user/profile.dart';
+import 'package:tfg/screens/user/Myprofile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class _MenuContent extends State<Menu> {
   nProfile() {
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Profile(widget.user))
+        MaterialPageRoute(builder: (context) => MyProfile(widget.user))
 
     );
   }

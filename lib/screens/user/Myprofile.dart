@@ -8,15 +8,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Profile extends StatefulWidget{
-  Profile(this.user);
+class MyProfile extends StatefulWidget{
+  MyProfile(this.user);
   User user;
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _MyProfileState createState() => _MyProfileState();
 }
 
-class _ProfileState extends State<Profile>{
+class _MyProfileState extends State<MyProfile>{
 
   final _formKey = GlobalKey<FormState>();
 

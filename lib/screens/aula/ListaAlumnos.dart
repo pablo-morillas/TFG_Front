@@ -8,6 +8,7 @@ import 'package:tfg/models/User.dart';
 import 'package:http/http.dart' as http;
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:tfg/screens/test/CreaTest.dart';
+import 'package:tfg/screens/user/Profile.dart';
 
 class ListaAlumnos extends StatefulWidget{
 
@@ -58,6 +59,12 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
                 itemBuilder: (BuildContext context, index){
                   return ListTile(
                       title: Text(_listaAlumnos[index].nombre),
+                      onTap: (){
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Profile(widget.user, _listaAlumnos[index]))
+                        );
+                      },
                       onLongPress: (){
                         deleteAlumno(context, _listaAlumnos[index]);
                       },
