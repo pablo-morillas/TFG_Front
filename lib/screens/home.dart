@@ -8,6 +8,7 @@ import 'dart:core';
 
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:tfg/screens/test/CreaTest.dart';
 
 import 'menu/menu.dart';
 
@@ -27,15 +28,20 @@ class _HomeState extends State<Home> {
   int _puntuacio = 0, _max_puntuacio = 0, _realitzades= 0, _pendents = 0;
   Future<void> _have_metrics;
 
+
   @override
   void initState() {
-    _puntuacio = _max_puntuacio = _realitzades = _pendents = 0;
-    _have_metrics = get_metrics();
+    setState(() {
+      _have_metrics = get_metrics();
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Buenas");
+    print(widget.user.userRole);
+
+    _have_metrics = get_metrics();
 
     return FutureBuilder<void>(
         future: _have_metrics,
@@ -44,7 +50,7 @@ class _HomeState extends State<Home> {
             drawer: Menu(widget.user),
             appBar: AppBar(
               title: Text(
-                'Indicadors usuari',
+                'Indicadors estudiant',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -69,7 +75,7 @@ class _HomeState extends State<Home> {
                       height: 150,
                       width: 400,
                       decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent.shade100,
+                        color: Colors.lightGreenAccent.shade100,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(
@@ -93,21 +99,23 @@ class _HomeState extends State<Home> {
                     height: 150,
                     width: 400,
                     decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent.shade100,
+                      color: Colors.lightGreenAccent.shade100,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
                       children: [
-                        Text('Formacions:',
+                        Text('Tests:',
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
                         SizedBox(height:10),
-                        Text(_realitzades.toString()+" realitzades",
+                        Text(_realitzades.toString()+" realitzats",
                           style: TextStyle(fontSize: 30,),),
                         Text(_pendents.toString()+" pendents",
                             style: TextStyle(fontSize: 30,)),
                       ],
+
                     )
                 ),
+                SizedBox(height: 220,),
               ],
             ),
           );
@@ -123,10 +131,11 @@ class _HomeState extends State<Home> {
         'Authorization': "Token "+ widget.user.token.toString(),
       },);
     var data = jsonDecode(utf8.decode(response.bodyBytes));
-    _puntuacio = data['puntos'];
-    _max_puntuacio = data['maxPuntos'];
-    _realitzades = data['testsRealizados'];
-    _pendents = data['testsPendientes'];
-  }
 
+      _puntuacio = data['puntos'];
+      _max_puntuacio = data['maxPuntos'];
+      _realitzades = data['testsRealizados'];
+      _pendents = data['testsPendientes'];
+
+  }
 }

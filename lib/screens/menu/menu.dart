@@ -1,7 +1,9 @@
 import 'package:tfg/models/User.dart';
+import 'package:tfg/screens/Informe/CreaInforme.dart';
 import 'package:tfg/screens/aula/ListaClases.dart';
+import 'package:tfg/screens/test/CreaTest.dart';
 import 'package:tfg/screens/user/login.dart';
-import 'package:tfg/screens/user/profile.dart';
+import 'package:tfg/screens/user/Myprofile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +37,7 @@ class _MenuContent extends State<Menu> {
   nProfile() {
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Profile(widget.user))
+        MaterialPageRoute(builder: (context) => MyProfile(widget.user))
 
     );
   }
@@ -47,6 +49,13 @@ class _MenuContent extends State<Menu> {
     );
   }
 
+  nInformes(){
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context)=> CreaInforme(widget.user, widget.user))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -55,7 +64,7 @@ class _MenuContent extends State<Menu> {
         children: <Widget>[
           AppBar(
             title: Text(
-              'CyberAware',
+              'TFG',
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -100,8 +109,16 @@ class _MenuContent extends State<Menu> {
           ListTile(
             leading: Icon(Icons.class_),
             title: Text(
-                'Aulas'),
+                'Aules'),
             onTap: () => nAulas(),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.info_rounded),
+            title: Text(
+              'Informes'
+            ),
+            onTap: () => nInformes(),
           ),
 
           ListTile(
