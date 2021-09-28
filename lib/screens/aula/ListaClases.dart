@@ -61,7 +61,7 @@ class _ListaClasesState extends State<ListaClases>{
                       deleteClase(context, _listaAulas[index]);
                     },
                       onTap: (){
-                        if(widget.user.userRole == "profesor"){
+                        if(widget.user.userRole == "professor"){
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, _listaAulas[index]))
@@ -95,6 +95,7 @@ class _ListaClasesState extends State<ListaClases>{
                   );
                 }),
           ),
+
           ElevatedButton(
             onPressed: () {
               addClase(context);
@@ -146,7 +147,7 @@ class _ListaClasesState extends State<ListaClases>{
   Future<void> getListaAulas() async {
 
     http.Response response;
-    if(widget.user.userRole == "profesor"){
+    if(widget.user.userRole == "professor"){
       response = await http.get(new Uri.http(apiURL, "/api/usuarios/" + widget.user.email + "/aulas"));
     }
     else{

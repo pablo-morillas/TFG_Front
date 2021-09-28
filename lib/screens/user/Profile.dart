@@ -2,16 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tfg/global/global.dart';
+import 'package:tfg/models/Aula.dart';
 import 'package:tfg/models/User.dart';
+import 'package:tfg/screens/aula/ListaAlumnos.dart';
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Profile extends StatefulWidget{
-  Profile(this.user, this.userVista);
+  Profile(this.user, this.aula, this.userVista);
   User user;
   User userVista;
+  Aula aula;
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -24,8 +27,19 @@ class _ProfileState extends State<Profile>{
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      drawer: Menu(widget.user),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, widget.aula))
+            );
+          },
+        ),
         title: Text(
           'Perfil d\'usuari',
           style: TextStyle(

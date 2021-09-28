@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
             drawer: Menu(widget.user),
             appBar: AppBar(
               title: Text(
-                'Indicadors usuari',
+                'Indicadors estudiant',
                 style: TextStyle(
                   color: Colors.white,
                 ),

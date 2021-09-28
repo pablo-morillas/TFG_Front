@@ -44,7 +44,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
       drawer: Menu(widget.user),
       appBar: AppBar(
         title: Text(
-          'Alumnes ' + widget.aula.nombre,
+          'Estudiants ' + widget.aula.nombre,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -62,7 +62,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
                       onTap: (){
                         Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => Profile(widget.user, _listaAlumnos[index]))
+                            MaterialPageRoute(builder: (context) => Profile(widget.user,widget.aula, _listaAlumnos[index]))
                         );
                       },
                       onLongPress: (){
@@ -83,7 +83,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
                   onPressed: () {
                       addAlumno(context);
                   },
-                  child: const Text('Afegir alumne', style: TextStyle(fontSize: 20)),
+                  child: const Text('Afegir estudiant', style: TextStyle(fontSize: 20)),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
                     onPrimary: Colors.white,
@@ -157,7 +157,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("Afegir alumne"),
+          title: Text("Afegir estudiant"),
           content: TextFormField(
             style: TextStyle(
               color: Colors.black,
