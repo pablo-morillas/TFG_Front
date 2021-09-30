@@ -1,5 +1,8 @@
 import 'package:tfg/models/User.dart';
 import 'package:tfg/screens/Informe/CreaInforme.dart';
+import 'package:tfg/screens/Informe/ListaInformes.dart';
+import 'package:tfg/screens/Informe/LoadingScreenInforme.dart';
+import 'package:tfg/screens/LoadingScreen.dart';
 import 'package:tfg/screens/aula/ListaClases.dart';
 import 'package:tfg/screens/test/CreaTest.dart';
 import 'package:tfg/screens/user/login.dart';
@@ -52,7 +55,7 @@ class _MenuContent extends State<Menu> {
   nInformes(){
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context)=> CreaInforme(widget.user, widget.user))
+        MaterialPageRoute(builder: (context)=> LoadingScreenInforme(widget.user))
     );
   }
 

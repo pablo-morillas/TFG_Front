@@ -12,7 +12,6 @@ class User {
     this._nombre = nombre;
     this._token = token;
     this._userRole = userRole;
-
   }
 
   String get email => _email;
