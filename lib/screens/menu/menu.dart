@@ -55,7 +55,7 @@ class _MenuContent extends State<Menu> {
   nInformes(){
     Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context)=> LoadingScreenInforme(widget.user))
+        MaterialPageRoute(builder: (context)=> CreaInforme(widget.user, widget.user))
     );
   }
 

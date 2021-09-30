@@ -7,6 +7,7 @@ import 'package:tfg/models/Informe.dart';
 import 'package:tfg/models/Test.dart';
 import 'package:tfg/models/User.dart';
 import 'package:http/http.dart' as http;
+import 'package:tfg/screens/Informe/VistaInforme.dart';
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:tfg/screens/test/Quiz.dart';
 
@@ -52,7 +53,7 @@ class _ListaInformesState extends State<ListaInformes>{
       drawer: Menu(widget.user),
       appBar: AppBar(
         title: Text(
-          'Tests',
+          'Informes',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -71,14 +72,14 @@ class _ListaInformesState extends State<ListaInformes>{
                           Navigator.pushReplacement(
                               context,
                         //MaterialPageRoute(builder: (context) => InformeVista(widget.user, _listaInformes[index]))
-                            MaterialPageRoute(builder: (context) => Home(widget.user))
+                            MaterialPageRoute(builder: (context) => VistaInforme(widget._listaProfes[index], widget.user, widget._listaInformes[index]))
                           );
                         }
                         else{
                           Navigator.pushReplacement(
                               context,
                         //MaterialPageRoute(builder: (context) => InformeVista(widget.user, _listaInformes[index]))
-                              MaterialPageRoute(builder: (context) => Home(widget.user))
+                              MaterialPageRoute(builder: (context) => VistaInforme(widget._listaProfes[index], widget.user, widget._listaInformes[index]))
                           );
                         }
                         },
@@ -89,7 +90,7 @@ class _ListaInformesState extends State<ListaInformes>{
                             Container(
                                 height: 144.0,
                                 width: 500,
-                                child: Image.network('https://cdn.pixabay.com/photo/2019/03/30/20/51/test-4092022_960_720.jpg', fit: BoxFit.fill)
+                                child: Image.network('https://cdn.pixabay.com/photo/2020/01/07/05/42/feedback-4746811_960_720.png', fit: BoxFit.fill)
                             ),
                             Row(children: [
                               padding(Icon(Icons.school)),
