@@ -90,7 +90,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
                     elevation: 5,
                   ),
                 ),
-              SizedBox(width: 50,),
+              SizedBox(width: 10,),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacement(

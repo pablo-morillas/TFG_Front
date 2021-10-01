@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:tfg/global/global.dart';
 import 'package:tfg/models/Aula.dart';
 import 'package:tfg/models/User.dart';
+import 'package:tfg/screens/Informe/CreaInforme.dart';
 import 'package:tfg/screens/aula/ListaAlumnos.dart';
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,6 +51,16 @@ class _ProfileState extends State<Profile>{
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
+        actions: [
+          IconButton(
+              onPressed: (){
+                Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context)=> CreaInforme(widget.user, widget.userVista))
+                  );
+                },
+              icon: Icon(Icons.analytics_rounded)),
+        ],
       ),
       body: Column(
           children: <Widget>[
