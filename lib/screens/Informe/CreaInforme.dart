@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:tfg/global/global.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tfg/models/Aula.dart';
-import 'package:tfg/models/Pregunta.dart';
 import 'package:tfg/models/User.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -25,8 +23,7 @@ class CreaInforme extends StatefulWidget{
 
 class _CreaInformeState extends State<CreaInforme>{
   var _controllerText = new TextEditingController();
-  final _formKey3 = GlobalKey<FormState>();
-
+  final _formKey = GlobalKey<FormState>();
   // Declare this variable
   int selectedRadioTileAssistencia;
   int selectedRadioTileAtencio;
@@ -91,7 +88,7 @@ class _CreaInformeState extends State<CreaInforme>{
   Widget buildForm() {
     return Scaffold(
       body: Form(
-          key: _formKey3,
+          key: _formKey,
           child: Padding(
             padding: EdgeInsets.all(25),
             child: SingleChildScrollView(
@@ -164,8 +161,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 1,
                     groupValue: selectedRadioTileAtencio,
-                    title: Text("Assistència irregular"),
-                    subtitle: Text("Falta frequentment a les classes sense justificació"),
+                    title: Text("Poca atenció i/o participació"),
+                    subtitle: Text("No està atent en les explicacions i/o no té interés en participar a classe"),
                     onChanged: (val) {
                       setSelectedRadioTileAtencio(val);
                     },
@@ -175,8 +172,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 2,
                     groupValue: selectedRadioTileAtencio,
-                    title: Text("Assistència millorable"),
-                    subtitle: Text("A vegades falta a classe de manera injustificada, però no de manera recurrent"),
+                    title: Text("Atenció i participació suficients"),
+                    subtitle: Text("Està atent i participa a classe, encara que no de manera regular"),
                     onChanged: (val) {
                       setSelectedRadioTileAtencio(val);
                     },
@@ -186,8 +183,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 3,
                     groupValue: selectedRadioTileAtencio,
-                    title: Text("Bona assistència"),
-                    subtitle: Text("Si falta a les classes només ho fa de manera puntual i justificada"),
+                    title: Text("Bona atenció i participació"),
+                    subtitle: Text("Frecuentment està atent i participa de manera activa per tal d'entendre les explicacions"),
                     onChanged: (val) {
                       setSelectedRadioTileAtencio(val);
                     },
@@ -214,8 +211,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 1,
                     groupValue: selectedRadioTileExercicis,
-                    title: Text("Assistència irregular"),
-                    subtitle: Text("Falta frequentment a les classes sense justificació"),
+                    title: Text("Disciplina irregular"),
+                    subtitle: Text("Fa els exercicis que es preparen per fer a casa de vegades o directament mai els fa"),
                     onChanged: (val) {
                       setSelectedRadioTileExercicis(val);
                     },
@@ -225,8 +222,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 2,
                     groupValue: selectedRadioTileExercicis,
-                    title: Text("Assistència millorable"),
-                    subtitle: Text("A vegades falta a classe de manera injustificada, però no de manera recurrent"),
+                    title: Text("Bona disciplina"),
+                    subtitle: Text("Fa els exercicis sovint i porta en forma de preguntes aquells que no ha sabut fer"),
                     onChanged: (val) {
                       setSelectedRadioTileExercicis(val);
                     },
@@ -236,8 +233,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 3,
                     groupValue: selectedRadioTileExercicis,
-                    title: Text("Bona assistència"),
-                    subtitle: Text("Si falta a les classes només ho fa de manera puntual i justificada"),
+                    title: Text("Disciplina exemplar"),
+                    subtitle: Text("Sempre realitza els exercicis preparats i intenta extreure conclusions de tots ells per tal de millorar la seva comprensió"),
                     onChanged: (val) {
                       setSelectedRadioTileExercicis(val);
                     },
@@ -264,8 +261,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 1,
                     groupValue: selectedRadioTileTreball,
-                    title: Text("Assistència irregular"),
-                    subtitle: Text("Falta frequentment a les classes sense justificació"),
+                    title: Text("Poca motivació"),
+                    subtitle: Text("No mostra motivació en les classes i això repercuteix en el seu rendiment"),
                     onChanged: (val) {
                       setSelectedRadioTileTreball(val);
                     },
@@ -275,8 +272,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 2,
                     groupValue: selectedRadioTileTreball,
-                    title: Text("Assistència millorable"),
-                    subtitle: Text("A vegades falta a classe de manera injustificada, però no de manera recurrent"),
+                    title: Text("Bona motivació i poca concentració"),
+                    subtitle: Text("Té la suficient motivació per fer un bon treball, encara que li costa concentrar-se a les classes"),
                     onChanged: (val) {
                       setSelectedRadioTileTreball(val);
                     },
@@ -286,8 +283,8 @@ class _CreaInformeState extends State<CreaInforme>{
                   RadioListTile(
                     value: 3,
                     groupValue: selectedRadioTileTreball,
-                    title: Text("Bona assistència"),
-                    subtitle: Text("Si falta a les classes només ho fa de manera puntual i justificada"),
+                    title: Text("Bona motivació i concentració"),
+                    subtitle: Text("Té una bona motivació i concentració a les classes lo que li permet ser creatiu i autònom al enfrontar-se als exercicis"),
                     onChanged: (val) {
                       setSelectedRadioTileTreball(val);
                     },
@@ -316,7 +313,6 @@ class _CreaInformeState extends State<CreaInforme>{
                     maxLines: null,
                     minLines: 5,
                     decoration: InputDecoration(
-                      labelText: "Valoracions",
                       hintText: "Escriu aquí les teves valoracions i observacions",
                       labelStyle: TextStyle(
                         fontSize: 18,
@@ -337,6 +333,25 @@ class _CreaInformeState extends State<CreaInforme>{
                           borderRadius: BorderRadius.circular(15),
                       ),
                   ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if(_controllerText.text == "" || selectedRadioTileTreball == 0 || selectedRadioTileExercicis == 0 || selectedRadioTileAtencio == 0 || selectedRadioTileAssistencia == 0){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('No has omplert tots els camps necessaris'),
+                        ));
+                      }
+                      else {
+                        addInforme();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Home(widget.user))
+                        );
+                      }
+                    }, 
+                    child: Text(
+                      "Crear informe"
+                    ),
                   )
                 ],
               ),
@@ -345,4 +360,27 @@ class _CreaInformeState extends State<CreaInforme>{
       )
     );
   }
+  void addInforme() async {
+    String fecha = new DateTime.now().toString().substring(10);
+    print(fecha);
+
+    await http.post(new Uri.http(apiURL, "/api/informes/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': widget.user.token,
+        },
+        body: jsonEncode({
+          'id': {
+            'estudiantId': widget.estudiante.email,
+            'professorId': widget.user.email,
+            'fecha': fecha,
+          },
+          'notaExercicis': selectedRadioTileExercicis,
+          'notaAtencio': selectedRadioTileAtencio,
+          'notaAssistencia': selectedRadioTileAssistencia,
+          'notaTreball': selectedRadioTileTreball,
+          'valoracions': _controllerText.text
+        }));
+  }
+
 }

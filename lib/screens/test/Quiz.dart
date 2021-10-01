@@ -182,7 +182,7 @@ class _quizState extends State<Quiz>{
                                             //addPuntuacio().whenComplete(() =>
                                               Navigator.pushReplacement(
                                                 context,
-                                                MaterialPageRoute(builder: (context) => LoadingScreen(widget.user, _puntuacion))
+                                                MaterialPageRoute(builder: (context) => LoadingScreen(widget.user, widget.test,_puntuacion))
                                             );
                                           },
                                           child: Text('Tornar al menu principal'),

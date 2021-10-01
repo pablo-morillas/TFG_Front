@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:tfg/global/global.dart';
+import 'package:tfg/models/Test.dart';
 import 'package:tfg/models/User.dart';
 
 import 'home.dart';
 
 class LoadingScreen extends StatefulWidget {
-  LoadingScreen(this.user, this._puntuacion);
+  LoadingScreen(this.user, this.test, this._puntuacion);
   User user;
+  Test test;
   int _puntuacion;
 
 
@@ -21,9 +23,37 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingState extends State<LoadingScreen> {
 
+  var _responseCode;
+
   @override
   void initState() {
-    addPuntuacio();
+    testRealizado();
+  }
+
+  void testRealizado() async {
+
+    http.Response response = await http.put(new Uri.http(apiURL, "/api/examenresolt/"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': widget.user.token,
+        },
+        body: jsonEncode({
+          'id': {
+            'alumnoId': widget.user.email,
+            'testId': widget.test.id,
+          },
+          'nota': (widget._puntuacion / 10).toString(),
+        }));
+    _responseCode = response.statusCode;
+
+    if(_responseCode != 400){
+      addPuntuacio();
+    }
+
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Home(widget.user))
+    );
   }
 
   void addPuntuacio() async {
@@ -36,12 +66,6 @@ class _LoadingState extends State<LoadingScreen> {
           'email': widget.user.email,
           'puntos': widget._puntuacion.toString(),
         }));
-
-
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Home(widget.user))
-    );
   }
 
   @override
