@@ -29,6 +29,8 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
 
   final controllerEmail = new TextEditingController();
 
+  final controllerNom = new TextEditingController();
+
 
   @override
   List<dynamic> initState() {
@@ -93,10 +95,8 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
               SizedBox(width: 10,),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context)=> CreaTest(widget.user, widget.aula))
-                  );
+                  addTest(context);
+
                 },
                 child: const Text('Afegir nou Test', style: TextStyle(fontSize: 20)),
                 style: ElevatedButton.styleFrom(
@@ -154,6 +154,7 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
     );
   }
   Future<void> addAlumno(context) async {
+    var _responseCode;
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -190,17 +191,67 @@ class _ListaAlumnosState extends State<ListaAlumnos>{
                 child: Text("Cancelar")),
             TextButton(
                 onPressed: () async {
-                  await http.put(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases" ),
+                  http.Response response = await http.put(new Uri.http(apiURL, "/api/" + widget.user.email + "/clases" ),
                       headers: <String, String>{
                         'Content-Type': 'application/json',
                       },
                       body: jsonEncode(<String, dynamic>{
                           'claseId': widget.aula.id,
                           'alumnoAssistenteEmail': controllerEmail.text}));
+                  _responseCode = response.statusCode;
+                  if(_responseCode == 400){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('No s\'ha pogut afegir l\'estudiant.'),
+                    ));
+                  }
+
                   Navigator.pop(context);
                   setState(() {
                     getListaAlumnos();
                   });
+                },
+                child: Text("Afegir", style: TextStyle(color: Colors.green),)),
+          ],
+        )
+    );
+  }
+  Future<void> addTest(context) async {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Afegir Clase"),
+          content: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              labelText: 'Nom de la Clase',
+              labelStyle: TextStyle(color: Colors.black),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
+            controller: controllerNom,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'No s\'ha escrit cap nom per al Test.';
+              }
+              return null;
+            },
+          ),
+          actions: [
+            TextButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                child: Text("Cancelar")),
+            TextButton(
+                onPressed: () async {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context)=> CreaTest(widget.user, widget.aula, controllerNom.text)
+                      ),
+                  );
                 },
                 child: Text("Afegir", style: TextStyle(color: Colors.green),)),
           ],
