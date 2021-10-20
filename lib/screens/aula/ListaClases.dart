@@ -49,66 +49,7 @@ class _ListaClasesState extends State<ListaClases>{
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _listaAulas.length,
-                itemBuilder: (BuildContext context, index){
-                  return InkWell(
-                    onLongPress: (){
-                      deleteClase(context, _listaAulas[index]);
-                    },
-                      onTap: (){
-                        if(widget.user.userRole == "professor"){
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, _listaAulas[index]))
-                          );
-                        }
-                        else{
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => ListaTests(widget.user, _listaAulas[index]))
-                          );
-                        }
-
-                      },
-                      child: Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                                height: 144.0,
-                                width: 500,
-                                child: Image.network('https://cdn.pixabay.com/photo/2019/03/30/20/51/test-4092022_960_720.jpg', fit: BoxFit.fill)
-                            ),
-                            padding(Text(_listaAulas[index].nombre, style: TextStyle(fontSize: 18.0))),
-                            Row(children: <Widget>[
-                              padding(Icon(Icons.school)),
-                              padding(Text(_listaAulas[index].profesor.nombre, style: TextStyle(fontSize: 18.0)))
-                            ],)
-                          ],
-                        ),
-                      )
-                  );
-                }),
-          ),
-
-          ElevatedButton(
-            onPressed: () {
-              addClase(context);
-            },
-            child: const Text('Afegir clase', style: TextStyle(fontSize: 20)),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green,
-              onPrimary: Colors.white,
-              elevation: 5,
-            ),
-          ),
-        ],
-      ),
+      body: listaClasses(context),
     );
   }
 
@@ -209,5 +150,124 @@ class _ListaClasesState extends State<ListaClases>{
           ],
         )
     );
+  }
+
+  Widget listaClasses(context){
+    if (widget.user.userRole == "professor"){
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _listaAulas.length,
+                itemBuilder: (BuildContext context, index){
+                  return InkWell(
+                      onLongPress: (){
+                        if(widget.user.userRole == "professor") {
+                          deleteClase(context, _listaAulas[index]);
+                        }
+                      },
+                      onTap: (){
+                        if(widget.user.userRole == "professor"){
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, _listaAulas[index]))
+                          );
+                        }
+                        else{
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => ListaTests(widget.user, _listaAulas[index]))
+                          );
+                        }
+
+                      },
+                      child: Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                                height: 144.0,
+                                width: 500,
+                                child: Image.network('https://cdn.pixabay.com/photo/2019/03/30/20/51/test-4092022_960_720.jpg', fit: BoxFit.fill)
+                            ),
+                            padding(Text(_listaAulas[index].nombre, style: TextStyle(fontSize: 18.0))),
+                            Row(children: <Widget>[
+                              padding(Icon(Icons.school)),
+                              padding(Text(_listaAulas[index].profesor.nombre, style: TextStyle(fontSize: 18.0)))
+                            ],)
+                          ],
+                        ),
+                      )
+                  );
+                }),
+          ),
+
+          ElevatedButton(
+            onPressed: () {
+              addClase(context);
+            },
+            child: const Text('Afegir clase', style: TextStyle(fontSize: 20)),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              elevation: 5,
+            ),
+          ),
+        ],
+      );
+    }
+    else{
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _listaAulas.length,
+                itemBuilder: (BuildContext context, index){
+                  return InkWell(
+                      onLongPress: (){
+                        if(widget.user.userRole == "professor") {
+                          deleteClase(context, _listaAulas[index]);
+                        }
+                      },
+                      onTap: (){
+                        if(widget.user.userRole == "professor"){
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => ListaAlumnos(widget.user, _listaAulas[index]))
+                          );
+                        }
+                        else{
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => ListaTests(widget.user, _listaAulas[index]))
+                          );
+                        }
+
+                      },
+                      child: Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                                height: 144.0,
+                                width: 500,
+                                child: Image.network('https://cdn.pixabay.com/photo/2019/03/30/20/51/test-4092022_960_720.jpg', fit: BoxFit.fill)
+                            ),
+                            padding(Text(_listaAulas[index].nombre, style: TextStyle(fontSize: 18.0))),
+                            Row(children: <Widget>[
+                              padding(Icon(Icons.school)),
+                              padding(Text(_listaAulas[index].profesor.nombre, style: TextStyle(fontSize: 18.0)))
+                            ],)
+                          ],
+                        ),
+                      )
+                  );
+                }),
+          ),
+        ],
+      );
+    }
   }
 }

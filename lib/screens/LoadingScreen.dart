@@ -32,7 +32,9 @@ class _LoadingState extends State<LoadingScreen> {
 
   void testRealizado() async {
 
-    http.Response response = await http.put(new Uri.http(apiURL, "/api/examenresolt/"),
+    int nota = (widget._puntuacion / 10).round();
+
+    http.Response response = await http.post(new Uri.http(apiURL, "/api/testRespondido"),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': widget.user.token,
@@ -40,11 +42,13 @@ class _LoadingState extends State<LoadingScreen> {
         body: jsonEncode({
           'id': {
             'alumnoId': widget.user.email,
-            'testId': widget.test.id,
+            'testId': widget.test.id.toString(),
           },
-          'nota': (widget._puntuacion / 10).toString(),
+          'nota': nota.toString(),
         }));
     _responseCode = response.statusCode;
+
+    print(_responseCode);
 
     if(_responseCode != 400){
       addPuntuacio();

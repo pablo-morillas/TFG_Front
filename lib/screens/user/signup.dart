@@ -70,7 +70,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>{
   final _controllerNombre = new TextEditingController();
   var _controllerUserRole = new TextEditingController();
 
-  List<String> listOfValue = ['alumne', 'professor'];
+  List<String> listOfValue = ['estudiant', 'professor'];
 
 
   User user = new User();

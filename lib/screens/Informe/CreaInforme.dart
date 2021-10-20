@@ -80,6 +80,18 @@ class _CreaInformeState extends State<CreaInforme>{
               )
           ),
         ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Home(widget.user))
+            );
+          },
+        ),
       ),
       body: buildForm()
     );
@@ -360,6 +372,7 @@ class _CreaInformeState extends State<CreaInforme>{
       )
     );
   }
+  
   void addInforme() async {
     String fecha = new DateTime.now().toString().substring(10);
     print(fecha);

@@ -15,9 +15,10 @@ import '../home.dart';
 
 class CreaTest extends StatefulWidget{
 
-  CreaTest(this.user, this.aula);
+  CreaTest(this.user, this.aula, this.nomTest);
   User user;
   Aula aula;
+  String nomTest;
 
   @override
   _CreaTestState createState() => _CreaTestState();
@@ -26,7 +27,6 @@ class CreaTest extends StatefulWidget{
 
 class _CreaTestState extends State<CreaTest> {
 
-  var _numRespuestas = 2;
   List<Pregunta> _listaPreguntas = new List.filled(10, Pregunta());
   var _preguntaSeleccionada = 0;
 
@@ -142,7 +142,7 @@ class _CreaTestState extends State<CreaTest> {
                         controller: _controllerText,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'No s\'ha escrit cap email.';
+                            return 'No s\'ha escrit cap pregunta.';
                           }
                           return null;
                         },
@@ -168,7 +168,7 @@ class _CreaTestState extends State<CreaTest> {
                         controller: _controllerRespostaCorrecta,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'No s\'ha escrit Resposta.';
+                            return 'No s\'ha escrit resposta.';
                           }
                           return null;
                         },
@@ -243,7 +243,7 @@ class _CreaTestState extends State<CreaTest> {
                         controller: _controllerResposta3,
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'No s\'ha escrit cap resposta.';
+                            return 'No s\'ha escrit resposta.';
                           }
                           return null;
                         },
@@ -337,7 +337,7 @@ class _CreaTestState extends State<CreaTest> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode(<String, String>{
-          'nombre': "test numero 2",
+          'nombre': widget.nomTest,
         }));
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -346,7 +346,7 @@ class _CreaTestState extends State<CreaTest> {
 
     for(var index = 0; index < _listaPreguntas.length; ++index){
       print(_listaPreguntas[index].text);
-      http.Response response = await http.post(new Uri.http(apiURL, "/api/" + widget.user.email + "/8/"+ idTest.toString()),
+      http.Response response = await http.post(new Uri.http(apiURL, "/api/" + widget.user.email + "/" + widget.aula.id.toString() + "/"+ idTest.toString() + "/preguntas"),
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
