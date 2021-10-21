@@ -142,19 +142,20 @@ class _MyProfileState extends State<MyProfile>{
   }
 
   Future<void> update(String nombre) async{
-    http.Response response = await http.patch(new Uri.http(apiURL, "/api/authentication/update_profile/"),
+    http.Response response = await http.put(new Uri.http(apiURL, "/api/usuarios/" +  widget.user.email),
         headers: <String, String>{
-          HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
-          HttpHeaders.authorizationHeader: "Token " + widget.user.token.toString(),
+          'Content-Type': 'application/json',
+          'Authorization': widget.user.token,
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode({
           'nombre': nombre,
         }));
+    print(response.statusCode);
     var data = jsonDecode(response.body);
     print(data);
     setState(() {
       _token = widget.user.token;
-      widget.user = User.fromJson(data['user']);
+      widget.user = User.fromJson(data);
       widget.user.token = _token;
     });
 

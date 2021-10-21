@@ -161,7 +161,7 @@ class _quizState extends State<Quiz>{
                             //pushResultado();
                             showDialog(context: context, builder: (context){
                               return AlertDialog(
-                                  title: Text('Has acabat la formació.',
+                                  title: Text('Has acabat el test.',
                                     style: TextStyle(fontSize: 24),),
                                   content: Container(
                                     height: 150,
@@ -171,7 +171,7 @@ class _quizState extends State<Quiz>{
                                           children: [
                                             Text('La teva puntuació ha estat: ',
                                               style: TextStyle(fontSize: 16),),
-                                            SizedBox(height: 100, width: 20,),
+                                            SizedBox(height: 100, width: 10,),
                                             Text(_puntuacion.toString(),
                                               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.green.shade900),
                                             ),
@@ -313,8 +313,6 @@ class _quizState extends State<Quiz>{
       'email': widget.user.email,
     'puntos': _puntuacion.toString(),
     }));
-
-
   }
 
 }

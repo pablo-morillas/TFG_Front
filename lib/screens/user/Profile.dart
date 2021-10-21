@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:tfg/global/global.dart';
 import 'package:tfg/models/Aula.dart';
+import 'package:tfg/models/Test.dart';
+import 'package:tfg/models/TestResolt.dart';
 import 'package:tfg/models/User.dart';
 import 'package:tfg/screens/Informe/CreaInforme.dart';
 import 'package:tfg/screens/aula/ListaAlumnos.dart';
@@ -23,6 +25,13 @@ class Profile extends StatefulWidget{
 
 class _ProfileState extends State<Profile>{
 
+  List<dynamic> _listaTests = [];
+  List<dynamic> _listaNomTests = [];
+
+  @override
+  List<dynamic> initState() {
+    getListaTests();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,10 +108,36 @@ class _ProfileState extends State<Profile>{
                   )
               ),
               ),
-            )
+            ),
+            SizedBox(height: 40,),
+            Text("Notes tests", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: _listaTests.length,
+                itemBuilder: (BuildContext context, index){
+                  return ListTile(
+                    title: Text(_listaTests[index].nomTest),
+                    leading: Icon(Icons.library_books_rounded),
+
+                    trailing: Text(_listaTests[index].nota.toString(), style: TextStyle(fontSize: 20),),
+                  );
+                }),
           ]
       ),
     );
+  }
+
+  Future<void> getListaTests() async {
+
+    http.Response response = await http.get(new Uri.http(apiURL, "/api/usuarios/" + widget.userVista.email + "/examenresolts" ));
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    print(data);
+
+    setState((){
+      _listaTests = data.map((model) => TestResolt.fromJson(model)).toList();
+    });
+
+    print(_listaTests);
   }
 
 }
