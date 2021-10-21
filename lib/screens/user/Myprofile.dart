@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:tfg/global/global.dart';
+import 'package:tfg/models/TestResolt.dart';
 import 'package:tfg/models/User.dart';
 import 'package:tfg/screens/menu/menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,10 +19,18 @@ class MyProfile extends StatefulWidget{
 
 class _MyProfileState extends State<MyProfile>{
 
+  List<dynamic> _listaTests = [];
+
   final _formKey = GlobalKey<FormState>();
 
   final _controllerText = TextEditingController();
   var _token;
+
+  @override
+  List<dynamic> initState() {
+    getListaTests();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +107,15 @@ class _MyProfileState extends State<MyProfile>{
               icon: Icon(Icons.edit)),
         ],
       ),
-      body: Column(
+      body: vistaPerfil(),
+    );
+  }
+
+
+
+  Widget vistaPerfil(){
+    if(widget.user.userRole == "professor"){
+      return Column(
           children: <Widget>[
             Stack(
               clipBehavior: Clip.none ,
@@ -137,9 +154,64 @@ class _MyProfileState extends State<MyProfile>{
               ),
             )
           ]
-      ),
-    );
-  }
+      );
+    }
+    else{
+      return Column(
+          children: <Widget>[
+            Stack(
+              clipBehavior: Clip.none ,
+              alignment: Alignment.center,
+              children: <Widget>[
+                Image(
+                  height: MediaQuery.of(context).size.height / 3,
+                  fit: BoxFit.cover,
+                  image: NetworkImage('https://cdn.pixabay.com/photo/2018/01/17/20/22/analytics-3088958_1280.jpg'),),
+                Positioned(
+                    bottom: -70,
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundColor: Colors.white,
+                      backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),)
+                ),
+              ],
+            ),
+            SizedBox(height: 90.0,),
+            ListTile(
+              title: Center(child: Text(
+                  widget.user.nombre,
+                  style: TextStyle(
+                    fontSize: 20,
+                  )
+              ),
+              ),
+            ),
+            ListTile(
+              title: Center(child: Text(
+                  widget.user.email,
+                  style: TextStyle(
+                    fontSize: 16,
+                  )
+              ),
+              ),
+            ),
+            SizedBox(height: 40,),
+            Text("Notes tests", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            ListView.builder(
+                shrinkWrap: true,
+                itemCount: _listaTests.length,
+                itemBuilder: (BuildContext context, index){
+                  return ListTile(
+                    title: Text(_listaTests[index].nomTest),
+                    leading: Icon(Icons.library_books_rounded),
+
+                    trailing: Text(_listaTests[index].nota.toString(), style: TextStyle(fontSize: 20),),
+                  );
+                }),
+          ]
+      );
+    }
+}
 
   Future<void> update(String nombre) async{
     http.Response response = await http.put(new Uri.http(apiURL, "/api/usuarios/" +  widget.user.email),
@@ -160,5 +232,19 @@ class _MyProfileState extends State<MyProfile>{
     });
 
   }
+
+  Future<void> getListaTests() async {
+
+    http.Response response = await http.get(new Uri.http(apiURL, "/api/usuarios/" + widget.user.email + "/examenresolts" ));
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    print(data);
+
+    setState((){
+      _listaTests = data.map((model) => TestResolt.fromJson(model)).toList();
+    });
+
+    print(_listaTests);
+  }
+
 
 }
