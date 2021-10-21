@@ -26,7 +26,6 @@ class Profile extends StatefulWidget{
 class _ProfileState extends State<Profile>{
 
   List<dynamic> _listaTests = [];
-  List<dynamic> _listaNomTests = [];
 
   @override
   List<dynamic> initState() {
