@@ -79,7 +79,7 @@ class _ProfileState extends State<Profile>{
                 Image(
                   height: MediaQuery.of(context).size.height / 3,
                   fit: BoxFit.cover,
-                  image: NetworkImage('https://cdn.pixabay.com/photo/2018/01/17/20/22/analytics-3088958_1280.jpg'),),
+                  image: NetworkImage('https://cdn.pixabay.com/photo/2014/02/01/17/28/apple-256263_960_720.jpg'),),
                 Positioned(
                     bottom: -70,
                     child: CircleAvatar(

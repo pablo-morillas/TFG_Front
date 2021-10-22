@@ -25,7 +25,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  int _puntuacio = 0, _max_puntuacio = 0, _realitzades= 0, _pendents = 0;
+  int _puntuacio = 0, _max_puntuacio = 0, _realitzades= 0, _pendents = 0, _numEstudiants = 0;
   Future<void> _have_metrics;
 
 
@@ -46,31 +46,56 @@ class _HomeState extends State<Home> {
     return FutureBuilder<void>(
         future: _have_metrics,
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          return Scaffold(
-            drawer: Menu(widget.user),
-            appBar: AppBar(
-              title: Text(
-                'Indicadors estudiant',
-                style: TextStyle(
+          if(widget.user.userRole == "professor"){
+            return Scaffold(
+              drawer: Menu(widget.user),
+              appBar: AppBar(
+                title: Text(
+                  'Indicadors professors',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+
+                ),
+                iconTheme: IconThemeData(
                   color: Colors.white,
                 ),
-
+                centerTitle: true,
               ),
-              iconTheme: IconThemeData(
-                color: Colors.white,
-              ),
-              centerTitle: true,
-            ),
-            body:
-            ListView(
-              padding: EdgeInsets.all(20),
-              children: [
-                Text('Indicadors totals:',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
-                SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
+              body:
+              ListView(
+                padding: EdgeInsets.all(20),
+                children: [
+                  Text('Indicadors:',
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                        padding: EdgeInsets.all(20),
+                        height: 150,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          color: Colors.lightGreenAccent.shade100,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            Text('Nombre d\'estudiants:',
+                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                            SizedBox(height:20),
+                            Text(240.toString(),
+                              style: TextStyle(fontSize: 30,),),
+                            SizedBox(height: 10),
+                            Text('nombre d\'estudiants que assisteixen a les teves classes',
+                              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                              textAlign: TextAlign.center,),
+                          ],
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
                       padding: EdgeInsets.all(20),
                       height: 150,
                       width: 400,
@@ -80,62 +105,130 @@ class _HomeState extends State<Home> {
                       ),
                       child: Column(
                         children: [
-                          Text('Puntuació:',
+                          Text('Nombre de classes:',
                             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
                           SizedBox(height:20),
-                          Text(_puntuacio.toString()+" / "+_max_puntuacio.toString(),
+                          Text(_numEstudiants.toString(),
                             style: TextStyle(fontSize: 30,),),
                           SizedBox(height: 10),
-                          Text('puntuació obtinguda / puntuació màxima',
-                            style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                          Text('nombre de classes que imparteixes',
+                            style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
                             textAlign: TextAlign.center,),
                         ],
+
                       )
                   ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                    padding: EdgeInsets.all(20),
-                    height: 150,
-                    width: 400,
-                    decoration: BoxDecoration(
-                      color: Colors.lightGreenAccent.shade100,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      children: [
-                        Text('Tests:',
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
-                        SizedBox(height:10),
-                        Text(_realitzades.toString()+" realitzats",
-                          style: TextStyle(fontSize: 30,),),
-                        Text(_pendents.toString()+" pendents",
-                            style: TextStyle(fontSize: 30,)),
-                      ],
+                  SizedBox(height: 220,),
+                ],
+              ),
+            );
+          }
+          else{
+            return Scaffold(
+              drawer: Menu(widget.user),
+              appBar: AppBar(
+                title: Text(
+                  'Indicadors estudiant',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
 
-                    )
                 ),
-                SizedBox(height: 220,),
-              ],
-            ),
-          );
+                iconTheme: IconThemeData(
+                  color: Colors.white,
+                ),
+                centerTitle: true,
+              ),
+              body:
+              ListView(
+                padding: EdgeInsets.all(20),
+                children: [
+                  Text('Indicadors:',
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                        padding: EdgeInsets.all(20),
+                        height: 150,
+                        width: 400,
+                        decoration: BoxDecoration(
+                          color: Colors.lightGreenAccent.shade100,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            Text('Puntuació:',
+                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                            SizedBox(height:20),
+                            Text(_puntuacio.toString()+" / "+_max_puntuacio.toString(),
+                              style: TextStyle(fontSize: 30,),),
+                            SizedBox(height: 10),
+                            Text('puntuació obtinguda / puntuació màxima',
+                              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                              textAlign: TextAlign.center,),
+                          ],
+                        )
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                      padding: EdgeInsets.all(20),
+                      height: 150,
+                      width: 400,
+                      decoration: BoxDecoration(
+                        color: Colors.lightGreenAccent.shade100,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        children: [
+                          Text('Tests:',
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                          SizedBox(height:10),
+                          Text(_realitzades.toString()+" realitzats",
+                            style: TextStyle(fontSize: 30,),),
+                          Text(_pendents.toString()+" pendents",
+                              style: TextStyle(fontSize: 30,)),
+                        ],
+
+                      )
+                  ),
+                  SizedBox(height: 220,),
+                ],
+              ),
+            );
+          }
         }
     );
 
   }
 
   Future<void> get_metrics() async{
-    http.Response response = await http.get(new Uri.http(apiURL, "/api/usuarios/"+ widget.user.email +"/puntuaciones"),
-      headers: <String, String>{
-        HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
-        'Authorization': "Token "+ widget.user.token.toString(),
-      },);
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    if(widget.user.userRole == "professor"){
+      http.Response response = await http.get(new Uri.http(apiURL, "/api/usuarios/"+ widget.user.email +"/numEstudiants"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+          'Authorization': "Token "+ widget.user.token.toString(),
+        },);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+      _numEstudiants = data['numEstudiants'];
+    }
+    else{
+
+      http.Response response = await http.get(new Uri.http(apiURL, "/api/usuarios/"+ widget.user.email +"/puntuaciones"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+          'Authorization': "Token "+ widget.user.token.toString(),
+        },);
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
 
       _puntuacio = data['puntos'];
       _max_puntuacio = data['maxPuntos'];
       _realitzades = data['testsRealizados'];
       _pendents = data['testsPendientes'];
+
+    }
 
   }
 }
