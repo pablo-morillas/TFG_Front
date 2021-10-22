@@ -25,7 +25,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  int _puntuacio = 0, _max_puntuacio = 0, _realitzades= 0, _pendents = 0, _numEstudiants = 0;
+  int _puntuacio = 0, _max_puntuacio = 0, _realitzades= 0, _pendents = 0, _numEstudiants = 0, _numClasses = 0;
   Future<void> _have_metrics;
 
 
@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
                             Text('Nombre d\'estudiants:',
                               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
                             SizedBox(height:20),
-                            Text(240.toString(),
+                            Text(_numEstudiants.toString(),
                               style: TextStyle(fontSize: 30,),),
                             SizedBox(height: 10),
                             Text('nombre d\'estudiants que assisteixen a les teves classes',
@@ -108,7 +108,7 @@ class _HomeState extends State<Home> {
                           Text('Nombre de classes:',
                             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
                           SizedBox(height:20),
-                          Text(_numEstudiants.toString(),
+                          Text(_numClasses.toString(),
                             style: TextStyle(fontSize: 30,),),
                           SizedBox(height: 10),
                           Text('nombre de classes que imparteixes',
@@ -212,7 +212,10 @@ class _HomeState extends State<Home> {
         },);
       var data = jsonDecode(utf8.decode(response.bodyBytes));
 
+      print(data);
+
       _numEstudiants = data['numEstudiants'];
+      _numClasses = data['numClasses'];
     }
     else{
 
